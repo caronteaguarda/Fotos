@@ -3,24 +3,521 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galería de Esculturas</title>
+    <title>Casa África</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+        }
+        .background {
+            background-image: url('https://github.com/caronteaguarda/CasaAfrica/blob/main/WhatsApp%20Image%202025-02-28%20at%2019.23.50.jpeg?raw=true');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            color: white;
+            overflow: auto;
+        }
+        .button {
+            display: block;
+            width: 200px;
+            margin: 10px auto;
+            padding: 10px;
+            background-color: transparent;
+            color: white;
+            text-decoration: none;
+            border: 2px solid white;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: white;
+            color: black;
+        }
+        .map-icon {
+            width: 20px;
+            height: 20px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+.small-image {
+            width: 50px;  /* Tamaño de la imagen */
+            height: auto; /* Mantiene la proporción de la imagen */
+            margin-left: 10px; /* Espacio entre la imagen y el texto */
+            border: 2px solid #ccc; /* Borde alrededor de la imagen */
+            padding: 5px; /* Espaciado dentro del borde */
+            border-radius: 5px; /* Bordes redondeados */
+        }
+        .page {
+            display: none;
+        }
+        .active {
             display: flex;
             flex-direction: column;
             align-items: center;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 20px;
         }
-        h1 {
-            margin-bottom: 40px;
-        }
-        .image-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); /* Establece 3 columnas */
-            gap: 20px;
+    </style>
+  <script>
+   var texts = {
+    es: { 
+        title: "Casa África", 
+        btn1: "Lugares de interés", 
+        btn2: "Dónde tapear", 
+        btn3: "Rutas guiadas",
+        btn4: "La casa",  
+        back: "Volver al inicio",
+        lugaresTitle: "Lugares de Interés en Alcalá de los Gazules",
+        tapeoTitle: "Dónde tapear en Alcalá de los Gazules",
+        plazaAlta: "Plaza Alta",
+        plazaAltaDesc: "En lo más alto del pueblo...",
+        castillo: "Castillo",
+        castilloDesc: "El antiguo castillo de Alcalá...",
+        barMoreno: "Bar Los Moreno",
+        barMorenoDesc: "Un buen lugar para tapear",
+        barRealm: "Bar Real Madrid",
+        barRealmDesc: "Tapas generosas a buen precio",
+        barLaReinventa: "Bar La Reinventá",
+        barLaReinventaDesc: "Un pequeño restaurante que se encuentra muy cerca de la casa. Ambiente agradable y comida con estilo",
+        barLaCabana: "Bar La Cabaña",
+        barLaCabanaDesc: "Restaurante con tapas y menú del día. Destaca la carne de caza. Buen precio",
+        hornoLuna: "Horno de Luna",
+        hornoLunaDesc: "Pastelería y panadería. Trabaja los productos tradicionales de Alcalá",
+        ventaPatrite: "Venta Patríte",
+        ventaPatriteDesc: "Venta típica para degustar los platos típicos Alcalaínos en un entorno natural privilegiado",
+        ventaCaracena: "Venta Caracena",
+        ventaCaracenaDesc: "Venta con comida casera a un precio muy razonable",
+        conventoSantoDomingo: "Convento de Santo Domingo",
+        conventoSantoDomingoDesc: "Convento fundado en el S XVI. Actualmente es un centro cultural.",
+        puenteRomano: "Puente romano",
+        puenteRomanoDesc: "Restos del antiguo puente romano",
+        fuenteSala: "Fuente 'La salá' y depósitos Romanos",
+        fuenteSalaDesc: "Fuente y depósitos de agua de origen romano.",
+        laAlameda: "La Alameda",
+        laAlamedaDesc: "Plaza de ambiente popular. Ayuntamiento. Policía Local",
+        guardiaCivil: "Guardia Civil",
+        guardiaCivilDesc: "Guardia Civil",
+        centroMedico: "Centro Médico",
+        centroMedicoDesc: "Centro Médico",
+	laCasaTitle: "La Casa",
+        casaInfo: "Salon- Cocina", // Texto descriptivo
+        casaInfoDesc: "Desconexión calentador de agua: par aconectar o desconectar, al lado del calentador hay un interruptor.",
+	segundaPlantaTitulo: "Segunda planta-Lavadora.",
+        segundaPlantaDesc: "La lavadora se halla dentro del armario empotrado.",
+	primeraPlantaTitulo: "Primera planta-Aseo.",
+	primeraPlantaDesc: "Para el funcionamiento de la electricidad, incluidos enchufes, pulsar el interruptor de afuera."    
+     
+    },
+    en: { 
+        title: "Casa Africa", 
+        btn1: "Places of Interest", 
+        btn2: "Where to Eat", 
+        btn3: "Guided Tours", 
+        btn4: "The house", 
+        back: "Back to Home",
+        lugaresTitle: "Places of Interest in Alcalá de los Gazules",
+        tapeoTitle: "Where to eat in Alcalá de los Gazules",
+        plazaAlta: "Plaza Alta",
+        plazaAltaDesc: "At the highest point of the town...",
+        castillo: "Castle",
+        castilloDesc: "The ancient castle of Alcalá...",
+        barMoreno: "Bar Los Moreno",
+        barMorenoDesc: "A great place for tapas",
+        barRealm: "Bar Real Madrid",
+        barRealmDesc: "Generous tapas at a good price",
+        barLaReinventa: "Bar La Reinventá",
+        barLaReinventaDesc: "A small restaurant that is very close to the house. Nice atmosphere and stylish food",
+        barLaCabana: "Bar La Cabaña",
+        barLaCabanaDesc: "Restaurant with tapas and menu of the day. Game meat stands out. Good price",
+        hornoLuna: "Horno de Luna",
+        hornoLunaDesc: "Pastry and bakery. Works with traditional products from Alcalá",
+        ventaPatrite: "Venta Patríte",
+        ventaPatriteDesc: "Typical sale to taste typical Alcalaínos dishes in a privileged natural environment",
+        ventaCaracena: "Venta Caracena",
+        ventaCaracenaDesc: "Sale with homemade food at a very reasonable price",
+        conventoSantoDomingo: "Convento de Santo Domingo",
+        conventoSantoDomingoDesc: "Convent founded in the 16th century. Currently it is a cultural center.",
+        puenteRomano: "Roman Bridge",
+        puenteRomanoDesc: "Remains of the ancient Roman bridge",
+        fuenteSala: "Fountain 'La salá' and Roman Tanks",
+        fuenteSalaDesc: "Fountain and water tanks of Roman origin.",
+        laAlameda: "La Alameda",
+        laAlamedaDesc: "Popular atmosphere square. City hall. Local Police",
+        guardiaCivil: "Civil Guard",
+        guardiaCivilDesc: "Civil Guard",
+        centroMedico: "Medical Center",
+        centroMedicoDesc: "Medical Center",
+ 	laCasaTitle: "The House",
+        casaInfo: "Ground floor: Living room-kitchen", // Texto descriptivo
+        casaInfoDesc: "Water heater disconnection: to connect or disconnect, there is a switch next to the heater.",
+	segundaPlantaTitulo: "Second floor-Washing machine.",
+        segundaPlantaDesc: "The washing machine is located inside the built-in wardrobe.",
+	primeraPlantaTitulo: "First floor-Toilet",
+	primeraPlantaDesc: "To operate electricity, including plugs, press the switch outside." 
+	
+
+
+	
+    },
+    fr: { 
+        title: "Maison Afrique", 
+        btn1: "Lieux d'intérêt", 
+        btn2: "Où manger", 
+        btn3: "Visites guidées",
+	btn4: "La maison",  
+        back: "Retour à l'accueil",
+        lugaresTitle: "Lieux d'intérêt à Alcalá de los Gazules",
+        tapeoTitle: "Où manger à Alcalá de los Gazules",
+        plazaAlta: "Plaza Alta",
+        plazaAltaDesc: "Au point le plus haut du village...",
+        castillo: "Château",
+        castilloDesc: "L'ancien château d'Alcalá...",
+        barMoreno: "Bar Los Moreno",
+        barMorenoDesc: "Un excellent endroit pour des tapas",
+        barRealm: "Bar Real Madrid",
+        barRealmDesc: "Tapas généreuses à bon prix",
+        barLaReinventa: "Bar La Reinventá",
+        barLaReinventaDesc: "Un petit restaurant très proche de la maison. Ambiance agréable et nourriture élégante",
+        barLaCabana: "Bar La Cabaña",
+        barLaCabanaDesc: "Restaurant avec tapas et menu du jour. La viande de gibier se démarque. Bon prix",
+        hornoLuna: "Horno de Luna",
+        hornoLunaDesc: "Pâtisserie et boulangerie. Travaille avec des produits traditionnels d'Alcalá",
+        ventaPatrite: "Venta Patríte",
+        ventaPatriteDesc: "Vente typique pour déguster des plats typiques d'Alcalaínos dans un environnement naturel privilégié",
+        ventaCaracena: "Venta Caracena",
+        ventaCaracenaDesc: "Vente avec des plats faits maison à un prix très raisonnable",
+        conventoSantoDomingo: "Convento de Santo Domingo",
+        conventoSantoDomingoDesc: "Convent fondé au XVIe siècle. Actuellement, c'est un centre culturel.",
+        puenteRomano: "Pont romain",
+        puenteRomanoDesc: "Vestiges de l'ancien pont romain",
+        fuenteSala: "Fontaine 'La salá' et réservoirs romains",
+        fuenteSalaDesc: "Fontaine et réservoirs d'eau d'origine romaine.",
+        laAlameda: "La Alameda",
+        laAlamedaDesc: "Place à l'ambiance populaire. L'hôtel de ville. Police locale",
+        guardiaCivil: "Garde civile",
+        guardiaCivilDesc: "Garde civile",
+        centroMedico: "Centre médical",
+        centroMedicoDesc: "Centre médical",
+  	laCasaTitle: "La Maison",
+        casaInfo: "Rez-de-chaussée : Séjour-cuisine", // Texto descriptivo
+        casaInfoDesc: "Déconnexion du chauffe-eau : pour brancher ou débrancher, il y a un interrupteur à côté du chauffe-eau.",
+	segundaPlantaTitulo: "Deuxième étage-Machine à laver.",
+        segundaPlantaDesc: "Le lave-linge est situé à l'intérieur de l'armoire intégrée.",
+	primeraPlantaTitulo: "Premier étage-Toilette",
+	primeraPlantaDesc: "Pour faire fonctionner l'électricité, y compris les prises, appuyez sur l'interrupteur à l'extérieur." 
+	
+
+	
+    }
+};
+
+function changeLanguage() {
+    var lang = document.getElementById("language-selector").value;
+
+    // Actualiza los textos de la página de inicio
+    document.getElementById("title").innerText = texts[lang].title;
+    document.getElementById("btn1").innerText = texts[lang].btn1;
+    document.getElementById("btn2").innerText = texts[lang].btn2;
+    document.getElementById("btn4").innerText = texts[lang].btn4;
+    document.querySelectorAll(".back-btn").forEach(btn => btn.innerText = texts[lang].back);
+
+ // Actualiza los textos en la página "La Casa"
+        document.getElementById("la-casa-title").innerText = texts[lang].laCasaTitle;
+  	document.getElementById("casa-info").innerText = texts[lang].casaInfo;  // Información sobre la Casa
+	document.getElementById("casa-info-desc").innerText = texts[lang].casaInfoDesc; 
+    	document.getElementById("segunda-planta-titulo").innerText = texts[lang].segundaPlantaTitulo;
+	document.getElementById("segunda-planta-desc").innerText = texts[lang].segundaPlantaDesc;
+	document.getElementById("primera-planta-titulo").innerText = texts[lang].primeraPlantaTitulo;
+	document.getElementById("primera-planta-desc").innerText = texts[lang].primeraPlantaDesc;
+
+	
+
+
+
+
+ // Actualiza los textos en la página de "Lugares"
+    document.getElementById("lugares-title").innerText = texts[lang].lugaresTitle;
+    document.getElementById("plaza-alta").innerHTML = texts[lang].plazaAlta + 
+        ' <a href="https://maps.app.goo.gl/mGNGCCmQDFFfSTLA7" target="_blank">' +
+        '<img class="map-icon" src="https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg" alt="Mapa"></a>';
+    document.getElementById("plaza-alta-desc").innerText = texts[lang].plazaAltaDesc;
+    document.getElementById("castillo").innerHTML = texts[lang].castillo + 
+        ' <a href="https://maps.app.goo.gl/Uua69VsdW5us42rs7" target="_blank">' +
+        '<img class="map-icon" src="https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg" alt="Mapa"></a>';
+    document.getElementById("castillo-desc").innerText = texts[lang].castilloDesc;
+
+    // Nuevos lugares de interés
+    document.getElementById("convento-santo-domingo").innerHTML = texts[lang].conventoSantoDomingo + 
+        ' <a href="https://maps.app.goo.gl/55RChT82F3g4J3un8" target="_blank">' +
+        '<img class="map-icon" src="https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg" alt="Mapa"></a>';
+    document.getElementById("convento-santo-domingo-desc").innerText = texts[lang].conventoSantoDomingoDesc;
+
+    document.getElementById("puente-romano").innerHTML = texts[lang].puenteRomano + 
+        ' <a href="https://maps.app.goo.gl/sjspQes4caG8cUS89" target="_blank">' +
+        '<img class="map-icon" src="https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg" alt="Mapa"></a>';
+    document.getElementById("puente-romano-desc").innerText = texts[lang].puenteRomanoDesc;
+
+    document.getElementById("fuente-sala").innerHTML = texts[lang].fuenteSala + 
+        ' <a href="https://maps.app.goo.gl/YTEGzAoYzzFLVTcq9" target="_blank">' +
+        '<img class="map-icon" src="https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg" alt="Mapa"></a>';
+    document.getElementById("fuente-sala-desc").innerText = texts[lang].fuenteSalaDesc;
+
+    document.getElementById("la-alameda").innerHTML = texts[lang].laAlameda + 
+        ' <a href="https://maps.app.goo.gl/DpCgHFCeyzRgeDSW7" target="_blank">' +
+        '<img class="map-icon" src="https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg" alt="Mapa"></a>';
+    document.getElementById("la-alameda-desc").innerText = texts[lang].laAlamedaDesc;
+
+    document.getElementById("guardia-civil").innerHTML = texts[lang].guardiaCivil + 
+        ' <a href="https://maps.app.goo.gl/zhiQgwFqPxCAogGf7" target="_blank">' +
+        '<img class="map-icon" src="https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg" alt="Mapa"></a>';
+    document.getElementById("guardia-civil-desc").innerText = texts[lang].guardiaCivilDesc;
+
+    document.getElementById("centro-medico").innerHTML = texts[lang].centroMedico + 
+        ' <a href="https://maps.app.goo.gl/zdoPtYDuGBjZFsjC6" target="_blank">' +
+        '<img class="map-icon" src="https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg" alt="Mapa"></a>';
+    document.getElementById("centro-medico-desc").innerText = texts[lang].centroMedicoDesc;
+
+    // Actualiza los textos en la página de "Tapeo"
+    document.getElementById("tapeo-title").innerText = texts[lang].tapeoTitle;
+    document.getElementById("bar-moreno").innerHTML = texts[lang].barMoreno + 
+        ' <a href="https://maps.app.goo.gl/zoK7rgy5vKJ6hZmD6" target="_blank">' +
+        '<img class="map-icon" src="https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg" alt="Mapa"></a>';
+    document.getElementById("bar-moreno-desc").innerText = texts[lang].barMorenoDesc;
+    document.getElementById("bar-realm").innerHTML = texts[lang].barRealm + 
+        ' <a href="https://maps.app.goo.gl/ktckpFDqq8ZQH9Xf6" target="_blank">' +
+        '<img class="map-icon" src="https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg" alt="Mapa"></a>';
+    document.getElementById("bar-realm-desc").innerText = texts[lang].barRealmDesc;
+
+    // Añade los nuevos bares
+    document.getElementById("bar-la-reinventa").innerHTML = texts[lang].barLaReinventa + 
+        ' <a href="https://maps.app.goo.gl/hWs8teyNoSayA8Pe9" target="_blank">' +
+        '<img class="map-icon" src="https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg" alt="Mapa"></a>';
+    document.getElementById("bar-la-reinventa-desc").innerText = texts[lang].barLaReinventaDesc;
+
+    document.getElementById("bar-la-cabana").innerHTML = texts[lang].barLaCabana + 
+        ' <a href="https://maps.app.goo.gl/h5eywoMv8NxDpmSF6" target="_blank">' +
+        '<img class="map-icon" src="https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg" alt="Mapa"></a>';
+    document.getElementById("bar-la-cabana-desc").innerText = texts[lang].barLaCabanaDesc;
+
+    document.getElementById("horno-luna").innerHTML = texts[lang].hornoLuna + 
+        ' <a href="https://maps.app.goo.gl/4EqkzB3A5PA9a8yB6" target="_blank">' +
+        '<img class="map-icon" src="https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg" alt="Mapa"></a>';
+    document.getElementById("horno-de-luna-desc").innerText = texts[lang].hornoLunaDesc;
+
+    document.getElementById("venta-patrite").innerHTML = texts[lang].ventaPatrite + 
+        ' <a href="https://maps.app.goo.gl/u88bbUMtPhkVpinf8" target="_blank">' +
+        '<img class="map-icon" src="https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg" alt="Mapa"></a>';
+    document.getElementById("venta-patrite-desc").innerText = texts[lang].ventaPatriteDesc;
+
+    document.getElementById("venta-caracena").innerHTML = texts[lang].ventaCaracena + 
+        ' <a href="https://maps.app.goo.gl/VLdUwMGtXSGXzcQE6" target="_blank">' +
+        '<img class="map-icon" src="https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg" alt="Mapa"></a>';
+    document.getElementById("venta-caracena-desc").innerText = texts[lang].ventaCaracenaDesc;
+}
+
+function showPage(pageId) {
+    document.querySelectorAll(".page").forEach(page => page.classList.remove("active"));
+    document.getElementById(pageId).classList.add("active");
+}
+</script>
+
+</head>
+<body>
+    <div id="home" class="background page active">
+        <h1 id="title">Casa África</h1>
+        <select id="language-selector" onchange="changeLanguage()">
+            <option value="es">Español</option>
+            <option value="en">English</option>
+            <option value="fr">Français</option>
+        </select>
+        <button id="btn1" class="button" onclick="showPage('lugares')">Lugares de interés</button>
+        <button id="btn2" class="button" onclick="showPage('tapeo')">Dónde tapear</button>
+	 <button id="btn4" class="button" onclick="showPage('la-casa')">La Casa</button>
+        <a id="btn3" class="button" href="https://www.fabularural.com/" target="_blank">Rutas guiadas</a>
+    </div>
+
+
+<div id="lugares" class="background page">
+    <h1 id="lugares-title">Lugares de Interés en Alcalá de los Gazules</h1>
+    <div>
+        <h3 id="plaza-alta"> Plaza Alta
+            <a href="https://maps.app.goo.gl/mGNGCCmQDFFfSTLA7" target="_blank">
+                <img class="map-icon" data-icon="https://maps.google.com/mapfiles/ms/icons/red-dot.png" src="https://maps.google.com/mapfiles/ms/icons/red-dot.png" alt="Mapa">
+            </a>
+        </h3>
+        <p id="plaza-alta-desc">Un lugar en la zona alta del pueblo...</p>
+    </div>
+    <div>
+        <h3 id="castillo"> El Castillo
+            <a href="https://maps.app.goo.gl/Uua69VsdW5us42rs7" target="_blank">
+                <img class="map-icon" data-icon="https://maps.google.com/mapfiles/ms/icons/red-dot.png" src="https://maps.google.com/mapfiles/ms/icons/red-dot.png" alt="Mapa">
+            </a>
+        </h3>
+        <p id="castillo-desc">Los restos del castillo...</p>
+    </div>
+    <div>
+        <h3 id="convento-santo-domingo"> Convento de Santo Domingo
+            <a href="https://maps.app.goo.gl/55RChT82F3g4J3un8" target="_blank">
+                <img class="map-icon" data-icon="https://maps.google.com/mapfiles/ms/icons/red-dot.png" src="https://maps.google.com/mapfiles/ms/icons/red-dot.png" alt="Mapa">
+            </a>
+        </h3>
+        <p id="convento-santo-domingo-desc">Convento fundado en el S XVI. Actualmente es un centro cultural.</p>
+    </div>
+    <div>
+        <h3 id="puente-romano"> Puente Romano
+            <a href="https://maps.app.goo.gl/sjspQes4caG8cUS89" target="_blank">
+                <img class="map-icon" data-icon="https://maps.google.com/mapfiles/ms/icons/red-dot.png" src="https://maps.google.com/mapfiles/ms/icons/red-dot.png" alt="Mapa">
+            </a>
+        </h3>
+        <p id="puente-romano-desc">Restos del antiguo puente romano.</p>
+    </div>
+    <div>
+        <h3 id="fuente-sala"> Fuente "La salá" y depósitos Romanos
+            <a href="https://maps.app.goo.gl/YTEGzAoYzzFLVTcq9" target="_blank">
+                <img class="map-icon" data-icon="https://maps.google.com/mapfiles/ms/icons/red-dot.png" src="https://maps.google.com/mapfiles/ms/icons/red-dot.png" alt="Mapa">
+            </a>
+        </h3>
+        <p id="fuente-sala-desc">Fuente y depósitos de agua de origen romano.</p>
+    </div>
+    <div>
+        <h3 id="la-alameda"> La Alameda
+            <a href="https://maps.app.goo.gl/DpCgHFCeyzRgeDSW7" target="_blank">
+                <img class="map-icon" data-icon="https://maps.google.com/mapfiles/ms/icons/red-dot.png" src="https://maps.google.com/mapfiles/ms/icons/red-dot.png" alt="Mapa">
+            </a>
+        </h3>
+        <p id="la-alameda-desc">Plaza de ambiente popular. Ayuntamiento. Policía Local.</p>
+    </div>
+    <div>
+        <h3 id="guardia-civil"> Guardia Civil
+            <a href="https://maps.app.goo.gl/zhiQgwFqPxCAogGf7" target="_blank">
+                <img class="map-icon" data-icon="https://maps.google.com/mapfiles/ms/icons/red-dot.png" src="https://maps.google.com/mapfiles/ms/icons/red-dot.png" alt="Mapa">
+            </a>
+        </h3>
+        <p id="guardia-civil-desc">Guardia Civil.</p>
+    </div>
+    <div>
+        <h3 id="centro-medico"> Centro Médico
+            <a href="https://maps.app.goo.gl/zdoPtYDuGBjZFsjC6" target="_blank">
+                <img class="map-icon" data-icon="https://maps.google.com/mapfiles/ms/icons/red-dot.png" src="https://maps.google.com/mapfiles/ms/icons/red-dot.png" alt="Mapa">
+            </a>
+        </h3>
+        <p id="centro-medico-desc">Centro Médico.</p>
+    </div>
+    <button class="button back-btn" onclick="showPage('home')">Volver al inicio</button>
+</div>
+
+
+
+<div id="tapeo" class="background page">
+    <h1 id="tapeo-title">Dónde tapear</h1>
+    <div>
+        <h3 id="bar-moreno">Bar 'Los Morenos' 
+            <a href="https://maps.app.goo.gl/zoK7rgy5vKJ6hZmD6" target="_blank">
+                <img class="map-icon" data-icon="https://maps.google.com/mapfiles/ms/icons/red-dot.png" src="https://maps.google.com/mapfiles/ms/icons/red-dot.png" alt="Mapa">
+            </a>
+        </h3>
+        <p id="bar-moreno-desc">Un buen lugar para tapear</p>
+    </div>
+    <div>
+        <h3 id="bar-realm">Bar Peña Real Madrid 
+            <a href="https://maps.app.goo.gl/ktckpFDqq8ZQH9Xf6" target="_blank">
+                <img class="map-icon" data-icon="https://maps.google.com/mapfiles/ms/icons/red-dot.png" src="https://maps.google.com/mapfiles/ms/icons/red-dot.png" alt="Mapa">
+            </a>
+        </h3>
+        <p id="bar-realm-desc">Tapas generosas a buen precio</p>
+    </div>
+    <div>
+        <h3 id="bar-la-reinventa">Bar La Reinventá 
+            <a href="https://maps.app.goo.gl/hWs8teyNoSayA8Pe9" target="_blank">
+                <img class="map-icon" data-icon="https://maps.google.com/mapfiles/ms/icons/red-dot.png" src="https://maps.google.com/mapfiles/ms/icons/red-dot.png" alt="Mapa">
+            </a>
+        </h3>
+        <p id="bar-la-reinventa-desc">Un pequeño restaurante que se encuentra muy cerca de la casa. Ambiente agradable y comida con estilo</p>
+    </div>
+    <div>
+        <h3 id="bar-la-cabana">Bar La Cabaña 
+            <a href="https://maps.app.goo.gl/h5eywoMv8NxDpmSF6" target="_blank">
+                <img class="map-icon" data-icon="https://maps.google.com/mapfiles/ms/icons/red-dot.png" src="https://maps.google.com/mapfiles/ms/icons/red-dot.png" alt="Mapa">
+            </a>
+        </h3>
+        <p id="bar-la-cabana-desc">Restaurante con tapas y menú del día. Destaca la carne de caza. Buen precio</p>
+    </div>
+    <div>
+        <h3 id="horno-luna">Horno de Luna 
+            <a href="https://maps.app.goo.gl/4EqkzB3A5PA9a8yB6" target="_blank">
+                <img class="map-icon" data-icon="https://maps.google.com/mapfiles/ms/icons/red-dot.png" src="https://maps.google.com/mapfiles/ms/icons/red-dot.png" alt="Mapa">
+            </a>
+        </h3>
+        <p id="horno-de-luna-desc">Pastelería y panadería. Trabaja los productos tradicionales de Alcalá</p>
+    </div>
+    <div>
+        <h3 id="venta-patríte">Venta Patríte 
+            <a href="https://maps.app.goo.gl/u88bbUMtPhkVpinf8" target="_blank">
+                <img class="map-icon" data-icon="https://maps.google.com/mapfiles/ms/icons/red-dot.png" src="https://maps.google.com/mapfiles/ms/icons/red-dot.png" alt="Mapa">
+            </a>
+        </h3>
+        <p id="venta-patríte-desc">Venta típica para degustar los platos típicos Alcalaínos en un entorno natural privilegiado</p>
+    </div>
+    <div>
+        <h3 id="venta-caracena">Venta Caracena 
+            <a href="https://maps.app.goo.gl/VLdUwMGtXSGXzcQE6" target="_blank">
+                <img class="map-icon" data-icon="https://maps.google.com/mapfiles/ms/icons/red-dot.png" src="https://maps.google.com/mapfiles/ms/icons/red-dot.png" alt="Mapa">
+            </a>
+        </h3>
+        <p id="venta-caracena-desc">Venta con comida casera a un precio muy razonable</p>
+    </div>
+    <button class="button" onclick="showPage('home')">Volver al inicio</button>
+</div>
+
+
+<!-- Página "La Casa" -->
+<div id="la-casa" class="background page">
+    <h1 id="la-casa-title">La Casa</h1>
+    <p>Información sobre la Casa África...</p>
+
+    <div>
+        <h3 id="casa-info">Salón- Cocina
+            <!-- Imagen al lado del título -->
+            <img class="small-image" src="https://cdn.pixabay.com/photo/2025/02/05/20/17/family-9385616_1280.jpg" alt="Imagen de Casa África">
+        </h3>
+        <p id="casa-info-desc">Desconexión calentador de agua: para conectar o desconectar, al lado del calentador hay un interruptor.</p>
+    </div>
+
+    <!-- Segundo grupo de información -->
+    <div>
+        <h3 id="primera-planta-titulo">Primera planta-Aseo</h3>
+        <p id="primera-planta-desc">Para el funcionamiento de la electricidad, incluidos enchufes, pulsar el interruptor de afuera.</p>
+    </div>
+
+    <!-- Tercer grupo de información -->
+    <div>
+        <h3 id="segunda-planta-titulo">Segunda planta-Lavadora</h3>
+        <p id="segunda-planta-desc">La lavadora se halla dentro del armario empotrado.</p>
+    </div>
+
+    <button class="button back-btn" onclick="showPage('home')">Volver al inicio</button>
+</div>
+
+
+<script>
+    function fixIcons() {
+        document.querySelectorAll('.map-icon').forEach(img => {
+            img.src = img.getAttribute('data-icon'); // Restaurar la imagen correcta
+        });
+    }
+
+    // Ejecutar esta función cada vez que se cambie el idioma.
+    document.addEventListener('DOMContentLoaded', fixIcons);
+</script>
+
+</body>
+</html>
+
             justify-items: center;
         }
         .image-card {
